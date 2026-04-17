@@ -1,0 +1,22 @@
+<svg width="1600" height="1000" viewBox="0 0 1600 1000" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="1600" height="1000" fill="#090909"/>
+  <rect x="100" y="120" width="1400" height="760" rx="40" fill="#121212" stroke="#2B2B2B" stroke-width="2"/>
+  <rect x="170" y="190" width="520" height="620" rx="30" fill="#191919"/>
+  <rect x="730" y="190" width="700" height="290" rx="30" fill="url(#paint0_linear_2_2)"/>
+  <rect x="730" y="520" width="700" height="290" rx="30" fill="#1A1A1A"/>
+  <circle cx="410" cy="430" r="140" fill="#FF6A00" fill-opacity="0.28"/>
+  <text x="170" y="155" fill="#FF8F1F" font-size="34" font-family="Arial, sans-serif" letter-spacing="4">HAMMER GYM</text>
+  <text x="250" y="700" fill="#F5F1EB" font-size="54" font-family="Arial, sans-serif" font-weight="700">Тестовый вертикальный</text>
+  <text x="250" y="752" fill="#C0B7AA" font-size="28" font-family="Arial, sans-serif">Под тренера или деталь интерьера</text>
+  <text x="790" y="290" fill="#F5F1EB" font-size="46" font-family="Arial, sans-serif" font-weight="700">Можно смешивать</text>
+  <text x="790" y="350" fill="#C0B7AA" font-size="28" font-family="Arial, sans-serif">общие кадры, детали и тренеров</text>
+  <text x="790" y="620" fill="#F5F1EB" font-size="34" font-family="Arial, sans-serif">Рекомендация</text>
+  <text x="790" y="675" fill="#C0B7AA" font-size="24" font-family="Arial, sans-serif">горизонтальные фото: 1600x1000 или 1920x1200</text>
+  <text x="790" y="715" fill="#C0B7AA" font-size="24" font-family="Arial, sans-serif">вертикальные фото: от 1000x1400</text>
+  <defs>
+    <linearGradient id="paint0_linear_2_2" x1="730" y1="190" x2="1430" y2="480" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#262626"/>
+      <stop offset="1" stop-color="#0E0E0E"/>
+    </linearGradient>
+  </defs>
+</svg>

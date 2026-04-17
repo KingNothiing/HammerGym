@@ -1,0 +1,60 @@
+# .gitignore для Django проекта HammerGym
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+*.egg-info/
+dist/
+build/
+
+# Virtual Environment
+venv/
+env/
+ENV/
+
+# Django
+*.log
+db.sqlite3
+db.sqlite3-journal
+/media
+/staticfiles
+
+# Environment variables
+.env
+.env.local
+.env.*.local
+!.env.example
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Old static prototypes (не используются в Django)
+index.html
+contact.html
+membership.html
+trainers.html
+style.css
+styles.css
+script.js
+
+# Documentation (для продакшена не нужно)
+docs/
+
+# Photo (пустая папка)
+photo/
+
+# Runserver logs
+runserver.err.log
+runserver.out.log

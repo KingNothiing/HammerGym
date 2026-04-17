@@ -1,0 +1,22 @@
+<svg width="1600" height="1000" viewBox="0 0 1600 1000" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="1600" height="1000" fill="#0C0C0C"/>
+  <circle cx="1290" cy="210" r="220" fill="#FF6A00" fill-opacity="0.18"/>
+  <circle cx="260" cy="760" r="260" fill="#FF8F1F" fill-opacity="0.14"/>
+  <rect x="120" y="140" width="1360" height="720" rx="42" fill="#151515" stroke="#3A2A1D" stroke-width="2"/>
+  <rect x="190" y="220" width="820" height="460" rx="28" fill="url(#paint0_linear_1_2)"/>
+  <rect x="1050" y="220" width="360" height="200" rx="24" fill="#1B1B1B"/>
+  <rect x="1050" y="450" width="360" height="230" rx="24" fill="#1B1B1B"/>
+  <text x="190" y="120" fill="#FF8F1F" font-size="34" font-family="Arial, sans-serif" letter-spacing="4">HAMMER GYM</text>
+  <text x="190" y="750" fill="#F5F1EB" font-size="64" font-family="Arial, sans-serif" font-weight="700">Тестовое фото зала</text>
+  <text x="190" y="805" fill="#C0B7AA" font-size="30" font-family="Arial, sans-serif">Широкий кадр подойдет для общего вида филиала</text>
+  <text x="1090" y="300" fill="#F5F1EB" font-size="28" font-family="Arial, sans-serif">Формат</text>
+  <text x="1090" y="345" fill="#C0B7AA" font-size="22" font-family="Arial, sans-serif">1600x1000+</text>
+  <text x="1090" y="530" fill="#F5F1EB" font-size="28" font-family="Arial, sans-serif">Назначение</text>
+  <text x="1090" y="575" fill="#C0B7AA" font-size="22" font-family="Arial, sans-serif">галерея и превью</text>
+  <defs>
+    <linearGradient id="paint0_linear_1_2" x1="190" y1="220" x2="1010" y2="680" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#2B2B2B"/>
+      <stop offset="1" stop-color="#121212"/>
+    </linearGradient>
+  </defs>
+</svg>
