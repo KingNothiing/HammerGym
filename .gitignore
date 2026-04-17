@@ -45,9 +45,9 @@ index.html
 contact.html
 membership.html
 trainers.html
-style.css
-styles.css
-script.js
+/style.css
+/styles.css
+/script.js
 
 # Documentation (для продакшена не нужно)
 docs/
