@@ -239,37 +239,7 @@
         </div>
       </div>
       <div class="form-card reveal contact-map-panel">
-        <h3>Оставить заявку</h3>
-        <p style="margin-bottom: 1.5rem; color: var(--muted);">Заполните форму и мы свяжемся с вами</p>
-        <form method="post" action="{% url 'submit_contact_request' %}" id="contact-form" novalidate>
-          {% csrf_token %}
-          <div class="form-grid">
-            <div class="form-group">
-              <label for="{{ contact_form.full_name.id_for_label }}">Имя *</label>
-              {{ contact_form.full_name }}
-              <span class="error-message" id="error-full_name"></span>
-            </div>
-            <div class="form-group">
-              <label for="{{ contact_form.phone.id_for_label }}">Телефон *</label>
-              {{ contact_form.phone }}
-              <span class="error-message" id="error-phone"></span>
-            </div>
-            <div class="form-group">
-              <label for="{{ contact_form.branch.id_for_label }}">Филиал</label>
-              {{ contact_form.branch }}
-            </div>
-            <div class="form-group">
-              <label for="{{ contact_form.message.id_for_label }}">Сообщение</label>
-              {{ contact_form.message }}
-            </div>
-          </div>
-          <button type="submit" class="btn btn-accent" style="width: 100%; margin-top: 1rem;">
-            <span class="btn-text">Отправить заявку</span>
-            <span class="btn-loader" style="display: none;">Отправка...</span>
-          </button>
-        </form>
-
-        <h3 style="margin-top: 2rem;">Карты филиалов</h3>
+        <h3>Карты филиалов</h3>
         <div class="contact-branch-list">
           {% for location in locations %}
             <article class="contact-branch-item">
