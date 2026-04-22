@@ -2,6 +2,9 @@
 {% load static %}
 
 {% block title %}HAMMER GYM | Тренажерный зал в Тирасполе{% endblock %}
+{% block meta_description %}HAMMER GYM: два филиала в Тирасполе, понятный прайс, карты, Instagram и заявка на связь на одной странице.{% endblock %}
+{% block og_title %}HAMMER GYM | Тренажерный зал в Тирасполе{% endblock %}
+{% block og_description %}Два филиала, понятные цены, карты и заявка на связь. Готовый сайт тренажерного зала для показа и запуска.{% endblock %}
 
 {% block content %}
 <div class="bg-orb bg-orb-1" aria-hidden="true"></div>
@@ -14,32 +17,28 @@
       <span></span><span></span><span></span>
     </button>
     <nav class="site-nav" id="site-nav">
-      <a href="#home">Главная</a>
-      <a href="#about">О зале</a>
-      <a href="#locations">Филиалы</a>
-      <a href="#pricing">Прайс</a>
-      <a href="#gallery">Галерея</a>
-      <a href="#trainers">Тренеры</a>
-      <a href="#contact">Контакты</a>
+      {% for item in nav_items %}
+        <a href="#{{ item.target }}">{{ item.label }}</a>
+      {% endfor %}
     </nav>
   </div>
 </header>
 
 {% if messages %}
-  <div class="container flash-stack global-flash reveal visible">
+  <div class="container flash-stack global-flash reveal visible" aria-live="polite">
     {% for message in messages %}
       <p class="flash {{ message.tags }}">{{ message }}</p>
     {% endfor %}
   </div>
 {% endif %}
 
-<main>
+<main id="content">
   <section class="hero section" id="home">
     <div class="container hero-grid">
       <div class="hero-copy reveal">
         <p class="eyebrow">Тренажерный зал в Тирасполе</p>
         <h1>HAMMER GYM — тренируйся стабильно, без лишних сложностей</h1>
-        <p class="lead">Два зала, понятные цены, удобный график работы. Посмотри прайс, выбери филиал и приходи.</p>
+        <p class="lead">Два филиала в Тирасполе, реальные цены, быстрый контакт и понятный формат для тех, кто хочет просто выбрать зал и начать тренироваться.</p>
         <div class="hero-actions">
           <a href="#pricing" class="btn btn-accent">Посмотреть цены</a>
           <a href="#contact" class="btn btn-glass">Контакты</a>
@@ -48,9 +47,9 @@
       <aside class="hero-card reveal parallax" data-speed="0.09">
         <h2>Что нужно знать</h2>
         <ul>
-          <li>2 зала: Ларионова и Оскар на Балке</li>
-          <li>Пн-Пт: 8:00-22:00, Вс: 9:00-21:00</li>
-          <li>Новости и фото — в Instagram @hammer_pmr</li>
+          {% for highlight in hero_highlights %}
+            <li>{{ highlight }}</li>
+          {% endfor %}
         </ul>
         <p class="hero-footnote">Телефон: {{ primary_phone }}</p>
       </aside>
@@ -61,14 +60,13 @@
     <div class="container split-grid">
       <article class="reveal">
         <p class="eyebrow">О HAMMER GYM</p>
-        <h2>Лучший спортивный зал</h2>
-        <p>Главная задача сайта: без лишних экранов показать, где находятся филиалы, какой есть прайс, как связаться с залом и где следить за обновлениями. Это рабочий формат для коммерческого спортивного зала, который хотят открыть для новых клиентов.</p>
+        <h2>Понятный сайт для реального зала</h2>
+        <p>По реальным фитнес-сайтам и страницам залов лучше всего работают базовые вещи: адрес, прайс, фотографии, направления тренировок, понятный контакт и Instagram как живая лента клуба. Здесь как раз собрана такая структура без лишней перегрузки.</p>
       </article>
       <div class="stats reveal parallax" data-speed="0.06">
-        <article><h3>2</h3><p>Филиала в Тирасполе</p></article>
-        <article><h3>7</h3><p>Карточек под команду тренеров</p></article>
-        <article><h3>11</h3><p>Позиций прайса в каждом филиале</p></article>
-        <article><h3>2</h3><p>Быстрые кнопки карты для филиалов</p></article>
+        {% for stat in about_stats %}
+          <article><h3>{{ stat.value }}</h3><p>{{ stat.label }}</p></article>
+        {% endfor %}
       </div>
     </div>
   </section>
@@ -140,7 +138,7 @@
             <p class="pill">{{ branch.badge }}</p>
             <h3>{{ branch.name }}</h3>
             <div class="price-list">
-              {% for label, value in branch.items %}
+              {% for label, value in branch.entries %}
                 <div class="price-line">
                   <span>{{ label }}</span>
                   <strong>{{ value }}</strong>
@@ -158,14 +156,14 @@
       <div class="section-head reveal">
         <p class="eyebrow">Галерея</p>
         <h2>Как выглядит зал</h2>
-        <p class="section-copy">Сейчас тут заглушки. Когда будут фото — просто заменим файлы, структура уже готова.</p>
+        <p class="section-copy">Раздел уже готов под реальные фотографии филиалов. Сейчас в нем стоят безопасные визуальные макеты, чтобы сразу показать будущую подачу галереи.</p>
       </div>
       <div class="gallery-shell reveal">
         <button class="carousel-btn gallery-prev" type="button" aria-label="Предыдущее фото">&#8592;</button>
         <div class="gallery-viewport">
           {% for image in gallery_images %}
             <figure class="gallery-slide {% if forloop.first %}active{% endif %}" aria-hidden="{% if forloop.first %}false{% else %}true{% endif %}">
-              <img src="{% static image.src %}" alt="{{ image.alt }}">
+              <img src="{% static image.src %}" alt="{{ image.alt }}" loading="{% if forloop.first %}eager{% else %}lazy{% endif %}" decoding="async">
               <figcaption>{{ image.caption }}</figcaption>
             </figure>
           {% endfor %}
@@ -180,8 +178,8 @@
     <div class="container">
       <div class="section-head reveal">
         <p class="eyebrow">Команда</p>
-        <h2>Тренеры</h2>
-        <p class="section-copy">Сейчас тут заглушки. Потом подставим реальные фото, имена и описания тренеров.</p>
+        <h2>Команда и направления</h2>
+        <p class="section-copy">Пока без реальных фото и имен, но уже в формате, который обычно ожидают на сайтах локальных залов: направления, специализация и короткое объяснение, кому подходит тренер.</p>
       </div>
       <div class="card-grid trainer-grid trainer-grid-wide">
         {% for trainer in trainers %}
@@ -194,21 +192,24 @@
           </article>
         {% endfor %}
       </div>
-      <p class="trainer-note reveal">Когда будут фото и описания, этот блок превратится в полноценный раздел команды без переделки структуры страницы.</p>
+      <p class="trainer-note reveal">После получения реальных фото и описаний этот раздел можно наполнить без переделки шаблона, сетки и мобильной версии.</p>
     </div>
   </section>
 
   <section class="section section-contrast" id="showcase">
     <div class="container split-grid form-layout">
       <div class="cta-panel reveal">
-        <p class="eyebrow">О проекте</p>
-        <h2>Сайт готов к показу</h2>
-        <p>Это рабочая версия. Видна структура зала, филиалы, цены, контакты. Реальные фото и тренеров добавим когда будут материалы.</p>
+        <p class="eyebrow">Как начать</p>
+        <h2>Путь к первой тренировке</h2>
+        <p>Сайт подводит человека к действию коротким и понятным маршрутом: выбрать зал, посмотреть цену и быстро перейти к контакту или заявке.</p>
         <div class="showcase-list">
           {% for step in showcase_steps %}
             <div class="showcase-item">
               <span>{{ forloop.counter }}</span>
-              <p>{{ step }}</p>
+              <div>
+                <h3>{{ step.title }}</h3>
+                <p>{{ step.text }}</p>
+              </div>
             </div>
           {% endfor %}
         </div>
@@ -216,8 +217,8 @@
       <div class="form-card reveal instagram-panel">
         <p class="eyebrow">Instagram</p>
         <h2>Новости зала</h2>
-        <p>Фото, видео и обновления из зала — всё в нашем Instagram.</p>
-        <a class="btn btn-accent" href="{{ instagram_url }}" target="_blank" rel="noreferrer">Перейти в Instagram</a>
+        <p>Фото из зала, анонсы, тренировки, атмосфера команды и повседневная жизнь клуба — всё в {{ instagram_handle }}.</p>
+        <a class="btn btn-accent btn-instagram" href="{{ instagram_url }}" target="_blank" rel="noreferrer">Перейти в Instagram</a>
       </div>
     </div>
   </section>
@@ -227,30 +228,75 @@
       <div class="cta-panel reveal">
         <p class="eyebrow">Контакты</p>
         <h2>Связаться с нами</h2>
-        <p>Телефон, Instagram и карты филиалов — выбирай удобный способ.</p>
+        <p>Для локального фитнес-клуба чаще всего работают звонок, мессенджер, Instagram и карта. Все основные точки контакта собраны в одном месте.</p>
         <div class="contact-points">
           <p><strong>Телефон:</strong> {{ primary_phone }}</p>
-          <p><strong>График:</strong> Пн-Пт: 8:00-22:00, Вс: 9:00-21:00</p>
-          <p><strong>Instagram:</strong> <a href="{{ instagram_url }}" target="_blank" rel="noreferrer">@hammer_pmr</a></p>
+          <p><strong>Доп. номер:</strong> {{ secondary_phone }} ({{ messenger_note }})</p>
+          <p><strong>График:</strong> {{ working_hours_summary }}</p>
+          <p><strong>Instagram:</strong> <a href="{{ instagram_url }}" target="_blank" rel="noreferrer">{{ instagram_handle }}</a></p>
         </div>
         <div class="contact-actions">
-          <a class="btn btn-accent" href="{{ instagram_url }}" target="_blank" rel="noreferrer">Instagram</a>
-          <a class="btn btn-glass" href="tel:{{ primary_phone }}">Позвонить</a>
+          <a class="btn btn-accent btn-instagram" href="{{ instagram_url }}" target="_blank" rel="noreferrer">Instagram</a>
+          <a class="btn btn-glass" href="tel:{{ primary_phone_href }}">Позвонить</a>
         </div>
       </div>
-      <div class="form-card reveal contact-map-panel">
-        <h3>Карты филиалов</h3>
-        <div class="contact-branch-list">
-          {% for location in locations %}
-            <article class="contact-branch-item">
-              <div>
-                <p class="pill">{{ location.label }}</p>
-                <h4>{{ location.name }}</h4>
-                <p>{{ location.description }}</p>
+      <div class="contact-stack">
+        <div class="form-card reveal">
+          <p class="eyebrow">Заявка</p>
+          <h3>Оставить заявку</h3>
+          <p class="section-copy">Если удобнее, оставь номер и короткий комментарий. Мы свяжемся и подскажем по филиалу, формату посещения или абонементу.</p>
+          <form id="contact-form" class="contact-form" action="{% url 'submit_contact_request' %}" method="post" novalidate>
+            {% csrf_token %}
+            {% if contact_form.non_field_errors %}
+              <div class="form-errors">
+                {{ contact_form.non_field_errors }}
               </div>
-              <a class="map-button" href="{{ location.map_url }}" target="_blank" rel="noreferrer">Открыть карту</a>
-            </article>
-          {% endfor %}
+            {% endif %}
+            <div class="form-grid">
+              <div class="form-group">
+                <label for="{{ contact_form.full_name.id_for_label }}">{{ contact_form.full_name.label }}</label>
+                {{ contact_form.full_name }}
+                <p id="error-full_name" class="error-message{% if contact_form.full_name.errors %} visible{% endif %}">{{ contact_form.full_name.errors|striptags }}</p>
+              </div>
+              <div class="form-group">
+                <label for="{{ contact_form.phone.id_for_label }}">{{ contact_form.phone.label }}</label>
+                {{ contact_form.phone }}
+                <p id="error-phone" class="error-message{% if contact_form.phone.errors %} visible{% endif %}">{{ contact_form.phone.errors|striptags }}</p>
+              </div>
+              <div class="form-group full-width">
+                <label for="{{ contact_form.branch.id_for_label }}">{{ contact_form.branch.label }}</label>
+                {{ contact_form.branch }}
+                <p id="error-branch" class="error-message{% if contact_form.branch.errors %} visible{% endif %}">{{ contact_form.branch.errors|striptags }}</p>
+              </div>
+              <div class="form-group full-width">
+                <label for="{{ contact_form.message.id_for_label }}">{{ contact_form.message.label }}</label>
+                {{ contact_form.message }}
+                <p id="error-message" class="error-message{% if contact_form.message.errors %} visible{% endif %}">{{ contact_form.message.errors|striptags }}</p>
+              </div>
+            </div>
+            <div class="contact-form-actions">
+              <button class="btn btn-accent" type="submit">
+                <span class="btn-text">Отправить заявку</span>
+                <span class="btn-loader">Отправляем...</span>
+              </button>
+              <p class="form-note">Номер используется только для ответа на ваш запрос.</p>
+            </div>
+          </form>
+        </div>
+        <div class="form-card reveal contact-map-panel">
+          <h3>Карты филиалов</h3>
+          <div class="contact-branch-list">
+            {% for location in locations %}
+              <article class="contact-branch-item">
+                <div>
+                  <p class="pill">{{ location.label }}</p>
+                  <h4>{{ location.name }}</h4>
+                  <p>{{ location.description }}</p>
+                </div>
+                <a class="map-button" href="{{ location.map_url }}" target="_blank" rel="noreferrer">Открыть карту</a>
+              </article>
+            {% endfor %}
+          </div>
         </div>
       </div>
     </div>
@@ -267,19 +313,23 @@
     <div>
       <h3>Контакты</h3>
       <p>Телефон: {{ primary_phone }}</p>
-      <p>Instagram: @hammer_pmr</p>
+      <p>Telegram / Viber: {{ secondary_phone }}</p>
+      <p>Instagram: {{ instagram_handle }}</p>
     </div>
     <div>
       <h3>График</h3>
-      <p>Пн - Пт: 8:00 - 22:00</p>
-      <p>Вс: 9:00 - 21:00</p>
+      {% for hour in working_hours %}
+        <p>{{ hour }}</p>
+      {% endfor %}
     </div>
     <div>
       <h3>Навигация</h3>
       <div class="social-links">
-        <a href="#pricing">Прайс</a>
-        <a href="#gallery">Галерея</a>
-        <a href="#trainers">Тренеры</a>
+        {% for item in nav_items %}
+          {% if item.target != 'home' %}
+            <a href="#{{ item.target }}">{{ item.label }}</a>
+          {% endif %}
+        {% endfor %}
         <a href="{{ instagram_url }}" target="_blank" rel="noreferrer">Instagram</a>
       </div>
     </div>

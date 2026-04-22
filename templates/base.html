@@ -5,13 +5,20 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>{% block title %}HAMMER GYM{% endblock %}</title>
-  <meta name="description" content="HAMMER GYM: тренажерный зал в Тирасполе с двумя филиалами, понятным прайсом и формой для связи.">
+  <meta name="description" content="{% block meta_description %}HAMMER GYM: тренажерный зал в Тирасполе с двумя филиалами, понятным прайсом и формой для связи.{% endblock %}">
+  <meta name="theme-color" content="#070707">
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="ru_RU">
+  <meta property="og:title" content="{% block og_title %}HAMMER GYM{% endblock %}">
+  <meta property="og:description" content="{% block og_description %}HAMMER GYM: тренажерный зал в Тирасполе с двумя филиалами, понятным прайсом и формой для связи.{% endblock %}">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=Sora:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="icon" href="{% static 'images/brand/favicon.svg' %}" type="image/svg+xml">
   <link rel="stylesheet" href="{% static 'css/style.css' %}">
 </head>
 <body>
+  <a class="skip-link" href="#content">Перейти к содержимому</a>
   {% block content %}{% endblock %}
   <script src="{% static 'js/script.js' %}"></script>
 </body>

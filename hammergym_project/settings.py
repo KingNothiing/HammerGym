@@ -12,10 +12,30 @@ https://docs.djangoproject.com/en/6.0/ref/settings/
 
 import os
 from pathlib import Path
-from decouple import config, Csv
+
+from decouple import config
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
+
+
+def _get_list_setting(name, default=""):
+    raw_value = config(name, default=default)
+    return [item.strip() for item in raw_value.split(",") if item.strip()]
+
+
+def _build_trusted_origins(hosts):
+    trusted_hosts = []
+    for host in hosts:
+        if host in {"localhost", "127.0.0.1", "[::1]", "*"}:
+            continue
+        if host.startswith("."):
+            trusted_hosts.append(f"https://*{host}")
+        elif host.startswith("http://") or host.startswith("https://"):
+            trusted_hosts.append(host)
+        else:
+            trusted_hosts.append(f"https://{host}")
+    return trusted_hosts
 
 
 # Quick-start development settings - unsuitable for production
@@ -27,7 +47,11 @@ SECRET_KEY = config('SECRET_KEY', default='django-insecure-i0nvq3fg#o&8l@ezcgvoe
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = config('DEBUG', default=True, cast=bool)
 
-ALLOWED_HOSTS = config('ALLOWED_HOSTS', default='localhost,127.0.0.1', cast=Csv())
+ALLOWED_HOSTS = _get_list_setting('ALLOWED_HOSTS', 'localhost,127.0.0.1')
+CSRF_TRUSTED_ORIGINS = _get_list_setting('CSRF_TRUSTED_ORIGINS')
+
+if not CSRF_TRUSTED_ORIGINS:
+    CSRF_TRUSTED_ORIGINS = _build_trusted_origins(ALLOWED_HOSTS)
 
 
 # Application definition
@@ -105,9 +129,9 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/6.0/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = config('LANGUAGE_CODE', default='ru')
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = config('TIME_ZONE', default='Europe/Chisinau')
 
 USE_I18N = True
 
@@ -117,7 +141,7 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/6.0/howto/static-files/
 
-STATIC_URL = 'static/'
+STATIC_URL = '/static/'
 STATICFILES_DIRS = [BASE_DIR / 'static']
 STATIC_ROOT = BASE_DIR / 'staticfiles'
 
@@ -127,6 +151,7 @@ EMAIL_BACKEND = os.getenv(
 )
 DEFAULT_FROM_EMAIL = os.getenv('DJANGO_DEFAULT_FROM_EMAIL', 'HAMMER GYM <no-reply@hammergym.com>')
 ADMIN_NOTIFICATION_EMAIL = os.getenv('HAMMERGYM_ADMIN_EMAIL', 'admin@hammergym.com')
+DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # =====================================================
 # SECURITY SETTINGS FOR PRODUCTION
@@ -135,20 +160,27 @@ ADMIN_NOTIFICATION_EMAIL = os.getenv('HAMMERGYM_ADMIN_EMAIL', 'admin@hammergym.c
 # https://docs.djangoproject.com/en/6.0/ref/settings/#security-settings
 
 if not DEBUG:
+    TRUST_PROXY_SSL_HEADER = config('TRUST_PROXY_SSL_HEADER', default=True, cast=bool)
+
     # HTTPS редирект (важно: на PythonAnywhere/Render SSL уже настроен)
     # Для локального тестирования с DEBUG=False можно отключить
     SECURE_SSL_REDIRECT = config('SECURE_SSL_REDIRECT', default=True, cast=bool)
+
+    if TRUST_PROXY_SSL_HEADER:
+        # Подходит для обычного деплоя за доверенным reverse proxy.
+        SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+        USE_X_FORWARDED_HOST = config('USE_X_FORWARDED_HOST', default=True, cast=bool)
 
     # Cookie безопасности
     SESSION_COOKIE_SECURE = True
     CSRF_COOKIE_SECURE = True
 
     # HSTS (HTTP Strict Transport Security)
-    SECURE_HSTS_SECONDS = 31536000  # 1 год
+    SECURE_HSTS_SECONDS = config('SECURE_HSTS_SECONDS', default=31536000, cast=int)
     SECURE_HSTS_INCLUDE_SUBDOMAINS = True
     SECURE_HSTS_PRELOAD = True
 
     # Дополнительные защиты
-    SECURE_BROWSER_XSS_FILTER = True
     SECURE_CONTENT_TYPE_NOSNIFF = True
+    SECURE_REFERRER_POLICY = 'strict-origin-when-cross-origin'
     X_FRAME_OPTIONS = 'DENY'

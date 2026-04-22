@@ -1,31 +1,57 @@
-# Быстрый деплой на PythonAnywhere
+# Быстрый чеклист деплоя
 
-## 📋 Что нужно сделать
+## 1. Подготовь env
 
-### 1. Регистрация (2 минуты)
-- Зайди на https://www.pythonanywhere.com
-- Зарегистрируйся (бесплатный аккаунт)
-- Запомни свой username
+Минимум для публичного демо:
 
-### 2. Загрузка кода (3 минуты)
-Открой **Bash console** и выполни:
+```env
+SECRET_KEY=<new-secret>
+DEBUG=False
+ALLOWED_HOSTS=yourusername.pythonanywhere.com
+CSRF_TRUSTED_ORIGINS=https://yourusername.pythonanywhere.com
+TIME_ZONE=Europe/Chisinau
+TRUST_PROXY_SSL_HEADER=True
+USE_X_FORWARDED_HOST=True
+SECURE_SSL_REDIRECT=True
+SECURE_HSTS_SECONDS=31536000
+```
+
+Проверь:
+
+- `.env` лежит рядом с `manage.py`
+- домен совпадает с будущим адресом PythonAnywhere
+
+## 2. Залей проект
+
 ```bash
 git clone https://github.com/KingNothiing/HammerGym.git
 cd HammerGym
-mkvirtualenv --python=/usr/bin/python3.10 hammergym-env
+mkvirtualenv --python=/usr/bin/python3.13 hammergym-env
 pip install -r requirements.txt
 ```
 
-### 3. Web App (5 минут)
-**Web → Add a new web app → Manual configuration → Python 3.10**
+Важно:
 
-Укажи пути (замени `yourusername` на свой):
-- **Source code:** `/home/yourusername/HammerGym`
-- **Working directory:** `/home/yourusername/HammerGym`
-- **Virtualenv:** `/home/yourusername/.virtualenvs/hammergym-env`
+- текущий проект на `Django 6.0.2`
+- для него нужен `Python 3.12+`
+- вариант `Manual configuration -> Python 3.10` для текущего состояния проекта не подойдет без отдельного даунгрейда Django
 
-### 4. WSGI файл (2 минуты)
-Нажми на **WSGI configuration file** и замени содержимое:
+Проверь:
+
+```bash
+workon hammergym-env
+python manage.py check
+python manage.py test
+```
+
+## 3. Настрой Web App
+
+- Source code: `/home/yourusername/HammerGym`
+- Working directory: `/home/yourusername/HammerGym`
+- Virtualenv: `/home/yourusername/.virtualenvs/hammergym-env`
+- Manual configuration: `Python 3.12` или `Python 3.13`
+
+## 4. WSGI
 
 ```python
 import os
@@ -41,53 +67,27 @@ from django.core.wsgi import get_wsgi_application
 application = get_wsgi_application()
 ```
 
-### 5. Environment Variables (2 минуты)
-**Web → Environment variables** добавь:
+## 5. Статика и миграции
 
-```
-SECRET_KEY=uc7@h+tj2y7c(480*hu!l$me6#8e!^szhv(6$y6bc@84s(5km8
-DEBUG=False
-ALLOWED_HOSTS=yourusername.pythonanywhere.com
-SECURE_SSL_REDIRECT=True
+```bash
+workon hammergym-env
+cd ~/HammerGym
+python manage.py collectstatic --noinput
+python manage.py migrate
+python manage.py showmigrations
 ```
 
-### 6. Static files (1 минута)
-**Web → Static files** добавь:
+Static files:
 
 | URL | Directory |
-|-----|-----------|
+| --- | --- |
 | `/static/` | `/home/yourusername/HammerGym/staticfiles/` |
 
-### 7. Финальные команды (2 минуты)
-В Bash console:
-```bash
-workon hammergym-env
-cd ~/HammerGym
-python manage.py collectstatic --noinput
-python manage.py migrate
-```
+## 6. Финальная проверка
 
-### 8. Запуск (1 минута)
-Нажми зелёную кнопку **Reload** в разделе Web.
-
-## ✅ Готово!
-
-Сайт доступен: `https://yourusername.pythonanywhere.com`
-
----
-
-## 🔄 Обновление после изменений
-
-```bash
-cd ~/HammerGym
-git pull origin master
-workon hammergym-env
-python manage.py collectstatic --noinput
-python manage.py migrate
-```
-
-Затем **Reload** в Web разделе.
-
----
-
-**Время деплоя: ~15-20 минут**
+- `https://yourusername.pythonanywhere.com/`
+- `https://yourusername.pythonanywhere.com/health/`
+- форма заявки
+- карты филиалов
+- стили и JS
+- `https://yourusername.pythonanywhere.com/static/css/style.css`

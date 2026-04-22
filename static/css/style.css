@@ -31,6 +31,23 @@ body {
   overflow-x: hidden;
 }
 
+.skip-link {
+  position: absolute;
+  top: 1rem;
+  left: 1rem;
+  z-index: 120;
+  padding: 0.75rem 1rem;
+  border-radius: 999px;
+  background: var(--accent);
+  color: #1f0d00;
+  transform: translateY(-160%);
+  transition: transform 220ms ease;
+}
+
+.skip-link:focus {
+  transform: translateY(0);
+}
+
 h1,
 h2,
 h3 {
@@ -293,6 +310,16 @@ strong {
   background: linear-gradient(135deg, var(--accent-strong), var(--accent));
 }
 
+.btn-instagram {
+  background: linear-gradient(135deg, rgba(255, 106, 0, 0.75), rgba(255, 143, 31, 0.75));
+  box-shadow: 0 8px 24px rgba(255, 106, 0, 0.2);
+}
+
+.btn-instagram:hover {
+  background: linear-gradient(135deg, rgba(255, 143, 31, 0.85), rgba(255, 106, 0, 0.85));
+  box-shadow: 0 16px 32px rgba(255, 106, 0, 0.3);
+}
+
 .btn-glass {
   background: var(--glass);
   border-color: rgba(255, 255, 255, 0.16);
@@ -431,10 +458,10 @@ strong {
 .facility-card:hover,
 .info-card:hover,
 .form-card:hover {
-  transform: translateY(-8px) scale(1.02);
-  border-color: rgba(255, 122, 32, 0.6);
-  box-shadow: 0 24px 48px rgba(255, 106, 0, 0.25),
-              0 8px 16px rgba(0, 0, 0, 0.4);
+  transform: translateY(-6px) scale(1.05);
+  border-color: rgba(255, 122, 32, 0.35);
+  box-shadow: 0 20px 40px rgba(255, 106, 0, 0.15),
+              0 8px 16px rgba(0, 0, 0, 0.3);
 }
 
 .price-list {
@@ -467,8 +494,9 @@ strong {
   font-size: 0.72rem;
   text-transform: uppercase;
   letter-spacing: 0.1em;
-  color: #ffffff;
-  background: var(--accent-strong);
+  color: var(--text);
+  background: rgba(255, 106, 0, 0.2);
+  border: 1px solid rgba(255, 106, 0, 0.3);
   border-radius: 999px;
   padding: 0.2rem 0.55rem;
 }
@@ -660,6 +688,12 @@ strong {
   background: linear-gradient(135deg, var(--accent), var(--accent-strong));
 }
 
+.showcase-item h3 {
+  margin: 0 0 0.25rem;
+  font-size: 1rem;
+  color: var(--text);
+}
+
 .form-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -820,6 +854,22 @@ textarea:focus {
   margin-top: 1rem;
 }
 
+.contact-stack,
+.contact-form,
+.contact-form-actions {
+  display: grid;
+  gap: 0.9rem;
+}
+
+.contact-form-actions .btn {
+  width: fit-content;
+}
+
+.form-note {
+  font-size: 0.86rem;
+  color: var(--muted);
+}
+
 .contact-actions,
 .contact-branch-list,
 .instagram-panel,
@@ -970,14 +1020,14 @@ textarea:focus {
   width: 52px;
   height: 52px;
   border-radius: 50%;
-  background: var(--accent);
+  background: rgba(255, 106, 0, 0.7);
   border: none;
   color: var(--text);
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 4px 20px rgba(255, 106, 0, 0.3);
+  box-shadow: 0 4px 20px rgba(255, 106, 0, 0.2);
   opacity: 0;
   visibility: hidden;
   transform: translateY(20px);
@@ -992,8 +1042,8 @@ textarea:focus {
 }
 
 .back-to-top:hover {
-  background: var(--accent-strong);
-  box-shadow: 0 6px 24px rgba(255, 106, 0, 0.5);
+  background: rgba(255, 143, 31, 0.85);
+  box-shadow: 0 6px 24px rgba(255, 106, 0, 0.3);
   transform: translateY(-4px);
 }
 

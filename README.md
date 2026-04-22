@@ -1,185 +1,105 @@
-# HAMMER GYM — Сайт тренажёрного зала
+# HAMMER GYM
 
-Презентационный сайт спортзала HAMMER GYM в Тирасполе (Приднестровье).
+Маркетинговый сайт тренажерного зала HAMMER GYM на Django. Проект подготовлен как клиентский демо-MVP: одна страница, два филиала, прайс, галерея, блок команды, контактная форма и быстрые точки входа в Instagram и карты.
 
-## О проекте
+## Что уже есть
 
-Информационный сайт с двумя филиалами:
-- **Тирасполь, ул. Ларионова**
-- **Оскар на Балке**
+- Адаптивная главная страница на Django templates
+- Прайс по двум филиалам
+- Галерея и блок команды в формате, готовом к наполнению живым контентом
+- Контактная форма с серверной и клиентской валидацией
+- Сохранение заявок в БД и email-уведомление администратору
+- Health-check endpoint: `/health/`
 
-### Функционал
-- Главная страница с презентацией зала
-- Прайс-листы по филиалам
-- Карточки тренеров
-- Галерея
-- Контактная информация
+## Архитектура
 
-## Стек технологий
+- `hammergym_project/` — настройки Django и корневой роутинг
+- `gym/content.py` — структурированный контент главной страницы
+- `gym/views.py` — тонкие представления
+- `gym/services/notifications.py` — отправка уведомлений по заявкам
+- `templates/` — HTML-шаблоны
+- `static/` — CSS, JS и визуальные ассеты
 
-- **Backend:** Django 6.0+
-- **База данных:** SQLite (для продакшена рекомендуется PostgreSQL)
-- **Frontend:** HTML + CSS + vanilla JavaScript
-- **Шрифты:** Google Fonts (Cinzel + Sora)
+Текущая версия сознательно остается в server-rendered Django без SPA-слоя. Для этого проекта это самый практичный уровень сложности.
 
-## Локальная разработка
+## Локальный запуск
 
-### 1. Установка зависимостей
+1. Установи зависимости:
 ```bash
 pip install -r requirements.txt
 ```
 
-### 2. Настройка окружения
-Скопируй `.env.example` в `.env`:
+2. Создай `.env` на основе шаблона:
 ```bash
 cp .env.example .env
 ```
 
-В `.env` укажи:
-- `SECRET_KEY` — сгенерируй новый: `python -c "from django.core.management.utils import get_random_secret_key; print(get_random_secret_key())"`
-- `DEBUG=True` (для разработки)
-- `ALLOWED_HOSTS=localhost,127.0.0.1`
-
-### 3. Применение миграций
+3. Примени миграции:
 ```bash
 python manage.py migrate
 ```
 
-### 4. Запуск сервера
+4. Запусти сервер:
 ```bash
 python manage.py runserver
 ```
 
-Открой: http://127.0.0.1:8000
+Сайт откроется на [http://127.0.0.1:8000](http://127.0.0.1:8000).
 
-## Деплой на PythonAnywhere (бесплатно)
+## Проверки
 
-### 1. Регистрация
-- Зайди на https://www.pythonanywhere.com
-- Зарегистрируйся (Beginner аккаунт — бесплатно)
-
-### 2. Загрузка кода
-**Вариант A — через Git:**
 ```bash
-# На PythonAnywhere Bash console:
-git clone <твой-repo>
-cd HammerGym
+python manage.py check
+python manage.py test
 ```
 
-**Вариант B — через ZIP:**
-- Заархивируй проект (без `.env`, `db.sqlite3`, `__pycache__`)
-- Загрузи через Files tab на PythonAnywhere
-
-### 3. Настройка на PythonAnywhere
-
-#### 3.1. Virtual environment
+Для продакшен-проверки можно дополнительно запускать:
 ```bash
-mkvirtualenv --python=/usr/bin/python3.10 hammergym-env
-pip install -r requirements.txt
+python manage.py check --deploy
 ```
 
-#### 3.2. Environment variables
-В разделе **Web → Environment variables** добавь:
-```
-SECRET_KEY=<твой-секретный-ключ>
-DEBUG=False
-ALLOWED_HOSTS=<твой-username>.pythonanywhere.com
-DJANGO_EMAIL_BACKEND=django.core.mail.backends.console.EmailBackend
-DJANGO_DEFAULT_FROM_EMAIL=HAMMER GYM <no-reply@hammergym.com>
-HAMMERGYM_ADMIN_EMAIL=admin@hammergym.com
-```
+При `DEBUG=True` Django покажет ожидаемые предупреждения для продакшена.
 
-#### 3.3. Web App настройка
-1. Перейди в **Web** → **Add a new web app**
-2. Выбери **Manual configuration** → **Python 3.10**
-3. Укажи пути:
-   - **Source code:** `/home/<твой-username>/HammerGym`
-   - **Working directory:** `/home/<твой-username>/HammerGym`
-   - **Virtualenv:** `/home/<твой-username>/.virtualenvs/hammergym-env`
+## Переменные окружения
 
-4. В **WSGI configuration file** (ссылка рядом с путём):
-   Найди строки:
-   ```python
-   # path = '/home/<твой-username>/myproject'
-   ```
-   Замени на:
-   ```python
-   path = '/home/<твой-username>/HammerGym'
-   if path not in sys.path:
-       sys.path.append(path)
+Минимум для локальной разработки:
 
-   os.environ['DJANGO_SETTINGS_MODULE'] = 'hammergym_project.settings'
-   ```
-
-5. В **Static files**:
-   | URL | Directory |
-   |---|---|
-   | `/static/` | `/home/<твой-username>/HammerGym/staticfiles/` |
-   | `/media/` | `/home/<твой-username>/HammerGym/media/` |
-
-### 4. Collect static files
-```bash
-workon hammergym-env
-cd ~/HammerGym
-python manage.py collectstatic --noinput
+```env
+SECRET_KEY=django-insecure-change-me-before-production
+DEBUG=True
+ALLOWED_HOSTS=localhost,127.0.0.1
+TIME_ZONE=Europe/Chisinau
 ```
 
-### 5. Миграции
-```bash
-python manage.py migrate
+Для публичного демо добавь:
+
+```env
+CSRF_TRUSTED_ORIGINS=https://your-demo-domain.example
+TRUST_PROXY_SSL_HEADER=True
+USE_X_FORWARDED_HOST=True
+SECURE_SSL_REDIRECT=True
+SECURE_HSTS_SECONDS=31536000
 ```
 
-### 6. Reload web app
-Нажми зелёную кнопку **Reload** в разделе Web.
+## Деплой
 
-Готово! Сайт доступен по адресу: `https://<твой-username>.pythonanywhere.com`
+Для самого быстрого публичного демо сейчас удобнее shared-hosting c ручной настройкой статики, например PythonAnywhere. Актуальные шаги собраны в [DEPLOY.md](DEPLOY.md).
 
-## Деплой на Render (альтернатива)
+Для этого проекта удобнее всего использовать `.env` в корне проекта, потому что настройки уже читаются через `python-decouple`. То есть на PythonAnywhere не нужно изобретать отдельную схему конфигурации: достаточно положить корректный `.env` рядом с `manage.py`, настроить WSGI и сделать reload.
 
-1. Зайди на https://render.com
-2. Подключи GitHub репозиторий
-3. Создай **Web Service**
-4. Настройки:
-   - **Build command:** `pip install -r requirements.txt && python manage.py collectstatic --noinput && python manage.py migrate`
-   - **Start command:** `gunicorn hammergym_project.wsgi:application`
-5. Добавь **Environment Variables**:
-   ```
-   SECRET_KEY=<сгенерированный-ключ>
-   DEBUG=False
-   ALLOWED_HOSTS=*
-   ```
+Если проект пойдет в полноценный production-режим, следующий логичный шаг:
 
-## Безопасность (ВАЖНО!)
+- вынести реальные тренеры, филиалы и прайс в админку
+- перейти с SQLite на PostgreSQL
+- добавить наблюдаемость и аналитику
+- подключить постоянное хранилище медиа
 
-Перед деплоем **ОБЯЗАТЕЛЬНО**:
-1. ✅ `DEBUG=False` в `.env`
-2. ✅ Сгенерируй новый `SECRET_KEY`
-3. ✅ Укажи правильные `ALLOWED_HOSTS`
-4. ✅ Не коммить `.env` в Git (он в `.gitignore`)
+## Документация в репозитории
 
-## Структура проекта
+- [DEPLOY.md](DEPLOY.md) — подробный сценарий публичного демо-деплоя
+- [QUICK_DEPLOY.md](QUICK_DEPLOY.md) — короткий чеклист выката
+- [docs/Architecture_Review_2026-04-20.md](docs/Architecture_Review_2026-04-20.md) — архитектурная оценка и рекомендации
 
-```
-HammerGym/
-├── hammergym_project/      # Django настройки
-│   ├── settings.py
-│   ├── urls.py
-│   └── wsgi.py
-├── gym/                    # Django приложение
-│   ├── views.py
-│   ├── models.py
-│   ├── urls.py
-│   └── forms.py
-├── templates/              # HTML шаблоны
-├── static/                 # Статические файлы (CSS, JS, images)
-├── .env                    # Локальные настройки (НЕ коммить!)
-├── .env.example            # Пример настроек
-├── .env.production         # Шаблон для продакшена
-├── requirements.txt        # Зависимости
-├── Procfile                # Для деплоя
-└── manage.py
-```
+## Статус
 
-## Лицензия
-
-Проект создан для демонстрации клиенту. Все права защищены.
+На дату 20 апреля 2026 года проект готов к показу заказчику как презентационный веб-сайт. Для полноценного боевого запуска еще нужны реальные контакты, фото, профили тренеров и финальная юридическая/контентная вычитка.
