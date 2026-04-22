@@ -39,10 +39,16 @@
         <p class="eyebrow">Тренажерный зал в Тирасполе</p>
         <h1>HAMMER GYM — тренируйся стабильно, без лишних сложностей</h1>
         <p class="lead">Два филиала в Тирасполе, реальные цены, быстрый контакт и понятный формат для тех, кто хочет просто выбрать зал и начать тренироваться.</p>
+        <div class="hero-badges" aria-label="Ключевые преимущества">
+          <span>2 филиала</span>
+          <span>Прайс на сайте</span>
+          <span>Карты и Instagram</span>
+        </div>
         <div class="hero-actions">
           <a href="#pricing" class="btn btn-accent">Посмотреть цены</a>
           <a href="#contact" class="btn btn-glass">Контакты</a>
         </div>
+        <p class="hero-note">Формат сайта-визитки: быстро понять, где находится зал, сколько стоит абонемент и как удобнее связаться.</p>
       </div>
       <aside class="hero-card reveal parallax" data-speed="0.09">
         <h2>Что нужно знать</h2>
@@ -52,6 +58,10 @@
           {% endfor %}
         </ul>
         <p class="hero-footnote">Телефон: {{ primary_phone }}</p>
+        <div class="hero-card-actions">
+          <a href="#locations" class="btn btn-glass">Выбрать филиал</a>
+          <a href="{{ instagram_url }}" class="btn btn-instagram" target="_blank" rel="noreferrer">Instagram</a>
+        </div>
       </aside>
     </div>
   </section>
@@ -335,4 +345,10 @@
     </div>
   </div>
 </footer>
+
+<div class="mobile-cta-bar" aria-label="Быстрые действия">
+  <a class="mobile-cta primary" href="tel:{{ primary_phone_href }}">Позвонить</a>
+  <a class="mobile-cta" href="#pricing">Прайс</a>
+  <a class="mobile-cta" href="{{ instagram_url }}" target="_blank" rel="noreferrer">Instagram</a>
+</div>
 {% endblock %}

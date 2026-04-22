@@ -11,6 +11,7 @@ from .models import ContactRequest
     EMAIL_BACKEND='django.core.mail.backends.locmem.EmailBackend',
     ADMIN_NOTIFICATION_EMAIL='admin@hammergym.com',
     DEFAULT_FROM_EMAIL='HAMMER GYM <no-reply@hammergym.com>',
+    SECURE_SSL_REDIRECT=False,
 )
 class GymViewsTests(TestCase):
     def test_home_page_renders_real_sections(self):
@@ -22,6 +23,8 @@ class GymViewsTests(TestCase):
         self.assertContains(response, 'Оскар на Балке')
         self.assertContains(response, 'Стоимость')
         self.assertContains(response, 'Оставить заявку')
+        self.assertContains(response, 'Прайс на сайте')
+        self.assertContains(response, 'aria-label="Быстрые действия"', html=False)
         self.assertContains(response, escape(HERO_HIGHLIGHTS[0]), html=False)
         self.assertContains(response, 'name="full_name"', html=False)
         self.assertContains(response, 'name="phone"', html=False)
@@ -71,3 +74,12 @@ class GymViewsTests(TestCase):
             response.content,
             {'status': 'ok', 'service': 'hammergym'},
         )
+
+
+@override_settings(SECURE_SSL_REDIRECT=True)
+class GymProductionSecurityTests(TestCase):
+    def test_home_redirects_to_https_when_ssl_redirect_enabled(self):
+        response = self.client.get(reverse('home'))
+
+        self.assertEqual(response.status_code, 301)
+        self.assertEqual(response.headers['Location'], 'https://testserver/')
